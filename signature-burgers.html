@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <title>הבורגרים שגרמו לכולם להתאהב — נחשקת</title>
+    <meta name="description" content="הכירו את תפריט הבורגרים הייחודי של נחשקת — כל בורגר הוא יצירת מופת של טעם, עסיסיות ויצירתיות. מסעדת המבורגרים בישראל שמגדירה מחדש את חוויית האכילה. בחרו את הבורגר שלכם עוד היום.">
+    <meta name="keywords" content="המבורגר הכי טעים בישראל, תפריט בורגרים תל אביב, בורגר סיגנצ'ר, מסעדת המבורגרים בישראל, בורגר מיוחד">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Zappy Analytics -->
+<script>
+(function() {
+  'use strict';
+  
+  // Configuration
+  var config = {
+    websiteId: 'c04c604d-3eaa-4781-bb1e-064cca5c3e02',
+    apiUrl: 'https://api.zappy5.com/api/analytics/track',
+    sessionDuration: 30 * 60 * 1000, // 30 minutes
+    visitorDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
+    trackPageViews: true,
+    trackClicks: true,
+    trackFormSubmissions: true
+  };
+  
+  // Generate or retrieve persistent visitor ID (30 days)
+  function getVisitorId() {
+    var visitorKey = 'zappy_visitor_' + config.websiteId;
+    var visitor = null;
+    
+    try {
+      visitor = localStorage.getItem(visitorKey);
+      if (visitor) {
+        var visitorData = JSON.parse(visitor);
+        var now = Date.now();
+        
+        // Check if visitor ID is still valid (30 days)
+        if (now - visitorData.created < config.visitorDuration) {
+          // Update last seen timestamp
+          visitorData.lastSeen = now;
+          localStorage.setItem(visitorKey, JSON.stringify(visitorData));
+          return visitorData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: LocalStorage not available');
+    }
+    
+    // Generate new visitor ID
+    var newVisitorId = 'zv_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      localStorage.setItem(visitorKey, JSON.stringify({
+        id: newVisitorId,
+        created: Date.now(),
+        lastSeen: Date.now()
+      }));
+    } catch (e) {
+      // Continue without local storage
+    }
+    
+    return newVisitorId;
+  }
+  
+  // Generate or retrieve session ID (30 minutes)
+  function getSessionId() {
+    var sessionKey = 'zappy_session_' + config.websiteId;
+    var session = null;
+    
+    try {
+      session = sessionStorage.getItem(sessionKey);
+      if (session) {
+        var sessionData = JSON.parse(session);
+        var now = Date.now();
+        
+        // Check if session is still valid
+        if (now - sessionData.timestamp < config.sessionDuration) {
+          // Update timestamp
+          sessionData.timestamp = now;
+          sessionStorage.setItem(sessionKey, JSON.stringify(sessionData));
+          return sessionData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: SessionStorage not available');
+    }
+    
+    // Generate new session ID
+    var newSessionId = 'zs_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      sessionStorage.setItem(sessionKey, JSON.stringify({
+        id: newSessionId,
+        timestamp: Date.now()
+      }));
+    } catch (e) {
+      // Continue without session storage
+    }
+    
+    return newSessionId;
+  }
+  
+  var visitorId = getVisitorId();
+  var sessionId = getSessionId();
+  
+  // Track an event
+  function trackEvent(eventType, data) {
+    data = data || {};
+    
+    var eventData = {
+      website_id: config.websiteId,
+      event_type: eventType,
+      page_path: window.location.pathname,
+      referrer: document.referrer || 'direct',
+      visitor_id: visitorId,
+      session_id: sessionId,
+      metadata: data
+    };
+    
+    // Use sendBeacon if available (better for page unload events)
+    if (navigator.sendBeacon) {
+      var blob = new Blob([JSON.stringify(eventData)], { type: 'application/json' });
+      navigator.sendBeacon(config.apiUrl, blob);
+    } else {
+      // Fallback to fetch
+      fetch(config.apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(eventData),
+        keepalive: true
+      }).catch(function(error) {
+        console.warn('Zappy Analytics: Failed to track event', error);
+      });
+    }
+  }
+  
+  // Track page view
+  if (config.trackPageViews) {
+    trackEvent('pageview', {
+      title: document.title,
+      url: window.location.href
+    });
+  }
+  
+  // Track clicks on important elements
+  if (config.trackClicks) {
+    document.addEventListener('click', function(e) {
+      var target = e.target;
+      
+      // Track button clicks (counted as actions)
+      if (target.tagName === 'BUTTON' || target.closest('button')) {
+        var button = target.tagName === 'BUTTON' ? target : target.closest('button');
+        trackEvent('click', {
+          element: 'button',
+          text: button.textContent.trim().substring(0, 100),
+          id: button.id || null,
+          class: button.className || null
+        });
+      }
+      
+      // Track link clicks (navigation - not counted as actions)
+      else if (target.tagName === 'A' || target.closest('a')) {
+        var link = target.tagName === 'A' ? target : target.closest('a');
+        trackEvent('navigation', {
+          element: 'link',
+          text: link.textContent.trim().substring(0, 100),
+          href: link.href,
+          external: link.hostname !== window.location.hostname
+        });
+      }
+    }, true);
+  }
+  
+  // Track form submissions
+  if (config.trackFormSubmissions) {
+    document.addEventListener('submit', function(e) {
+      var form = e.target;
+      
+      trackEvent('form_submit', {
+        form_id: form.id || null,
+        form_name: form.name || null,
+        form_action: form.action || null,
+        form_method: form.method || 'GET'
+      });
+    }, true);
+  }
+  
+  // Track time on page (send on page unload)
+  var pageLoadTime = Date.now();
+  
+  window.addEventListener('beforeunload', function() {
+    var timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000); // in seconds
+    
+    trackEvent('page_unload', {
+      time_on_page: timeOnPage,
+      page_path: window.location.pathname
+    });
+  });
+  
+  // Expose tracking function globally for custom events
+  window.zappyAnalytics = {
+    track: trackEvent,
+    getVisitorId: function() { return visitorId; },
+    getSessionId: function() { return sessionId; }
+  };
+  
+})();
+</script>
+<!-- End Zappy Analytics -->
+    <meta property="og:title" content="הבורגרים שגרמו לכולם להתאהב — נחשקת">
+    <meta property="og:description" content="הכירו את תפריט הבורגרים הייחודי של נחשקת — כל בורגר הוא יצירת מופת של טעם, עסיסיות ויצירתיות. מסעדת המבורגרים בישראל שמגדירה מחדש את חוויית האכילה. בחרו את הבורגר שלכם עוד היום.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="הבורגרים שגרמו לכולם להתאהב — נחשקת">
+    <meta name="twitter:description" content="הכירו את תפריט הבורגרים הייחודי של נחשקת — כל בורגר הוא יצירת מופת של טעם, עסיסיות ויצירתיות. מסעדת המבורגרים בישראל שמגדירה מחדש את חוויית האכילה. בחרו את הבורגר שלכם עוד היום.">
+    <meta property="og:type" content="website">
+  <meta property="og:locale" content="he_IL">
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Cookie Consent -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.css">
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.umd.js"></script>
+    <!-- Mickidum Accessibility Toolbar -->
+    <script src="https://cdn.jsdelivr.net/gh/mickidum/acc_toolbar/acctoolbar/acctoolbar.min.js"></script>
+    <link rel="stylesheet" href="/styles.css">
+
+    <style id="zappy-dropdown-submenu-styles">
+      /* ========== DESKTOP DROPDOWN SUBMENU STYLES ========== */
+      /* Base styles for dropdown submenus - parent must be positioned */
+      .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { position: relative; }
+      /* Submenu base - hidden by default */
+      .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { display: block !important; position: absolute !important; top: 100%; left: 0; min-width: 220px; background: white; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); padding: 8px 0; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; z-index: 1000; list-style: none; pointer-events: none; }
+      /* CRITICAL: Desktop hover styles to show dropdown */
+      .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Submenu item styling */
+      .sub-menu li { list-style: none; margin: 0; padding: 0; }
+      .sub-menu a { display: block !important; padding: 10px 16px !important; color: var(--text-dark, #333) !important; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background-color 0.2s; }
+      .sub-menu .zappy-nav-child > a { padding-left: 28px !important; font-size: 0.9em !important; opacity: 0.85 !important; }
+      [dir="rtl"] .sub-menu .zappy-nav-child > a, html[lang="he"] .sub-menu .zappy-nav-child > a, html[lang="ar"] .sub-menu .zappy-nav-child > a { padding-left: 10px !important; padding-right: 28px !important; }
+      .sub-menu .zappy-nav-parent > a { font-weight: 600 !important; }
+      .sub-menu a:hover { background-color: #f5f5f5; }
+      /* RTL (Hebrew/Arabic) dropdown positioning */
+      [dir="rtl"] .nav-menu .sub-menu, [dir="rtl"] nav .sub-menu, [dir="rtl"] .navbar .sub-menu, html[lang="he"] .nav-menu .sub-menu, html[lang="he"] nav .sub-menu, html[lang="he"] .navbar .sub-menu, html[lang="ar"] .nav-menu .sub-menu, html[lang="ar"] nav .sub-menu, html[lang="ar"] .navbar .sub-menu { left: auto !important; right: 0 !important; }
+      /* Hide empty dropdown menus (exclude catalog sub-menus that use <a> children instead of <li>) */
+      .sub-menu:empty, .sub-menu:not(:has(li:not(.zappy-hidden-menu-item))):not(:has(> a)), .sub-menu:not(:has(li)):not(:has(> a)) { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+      /* Desktop: show submenu on Menu Group hover */
+      li:has(.menu-group-title):hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Menu Group title styling */
+      .nav-menu > li > .menu-group-title, #navMenu > li > .menu-group-title { display: inline-block; padding: 0.5rem 1rem; cursor: default; user-select: none; }
+      
+      /* ========== MOBILE SUBMENU STYLES ========== */
+      @media (max-width: 768px) {
+        .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { position: static !important; transform: none !important; box-shadow: none !important; background: transparent !important; max-height: 0; overflow: hidden; opacity: 0; visibility: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; padding: 0 !important; border-radius: 0 !important; }
+        .navbar .sub-menu.mobile-expanded, .nav-menu .sub-menu.mobile-expanded, #navMenu .sub-menu.mobile-expanded { max-height: none !important; overflow-y: visible !important; opacity: 1 !important; visibility: visible !important; padding: 8px 0 8px 16px !important; }
+        [dir="rtl"] .sub-menu.mobile-expanded, html[lang="he"] .sub-menu.mobile-expanded { padding: 8px 16px 8px 0 !important; }
+        /* Disable hover behavior on mobile */
+        .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 0; visibility: hidden; pointer-events: none; }
+        .nav-menu li > .sub-menu.mobile-expanded, nav li > .sub-menu.mobile-expanded, .navbar li > .sub-menu.mobile-expanded, #navMenu li > .sub-menu.mobile-expanded { opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; }
+        .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { display: flex !important; flex-wrap: wrap !important; align-items: center !important; position: relative !important; min-height: 44px !important; }
+        .nav-menu li:has(.sub-menu) > a, nav li:has(.sub-menu) > a, .navbar li:has(.sub-menu) > a, #navMenu li:has(.sub-menu) > a { flex: 1 !important; min-width: 0 !important; }
+        .nav-menu li:has(.sub-menu) > .menu-group-title, nav li:has(.sub-menu) > .menu-group-title, .navbar li:has(.sub-menu) > .menu-group-title, #navMenu li:has(.sub-menu) > .menu-group-title { flex: 1 !important; min-width: 0 !important; padding: 0 !important; line-height: inherit !important; }
+        .nav-menu li:has(.sub-menu) > .sub-menu, nav li:has(.sub-menu) > .sub-menu, .navbar li:has(.sub-menu) > .sub-menu, #navMenu li:has(.sub-menu) > .sub-menu { flex-basis: 100% !important; width: 100% !important; }
+        .nav-menu li:has(.sub-menu) > a [class*="chevron"], .nav-menu li:has(.sub-menu) > a [class*="arrow"], .nav-menu li:has(.sub-menu) > a .fa-chevron-down, .nav-menu li:has(.sub-menu) > a .fa-angle-down, nav li:has(.sub-menu) > a [class*="chevron"], nav li:has(.sub-menu) > a [class*="arrow"], #navMenu li:has(.sub-menu) > a [class*="chevron"], #navMenu li:has(.sub-menu) > a [class*="arrow"] { display: none !important; visibility: hidden !important; }
+        .mobile-submenu-toggle { display: flex !important; align-items: center !important; justify-content: center !important; width: 44px !important; height: auto !important; background: transparent !important; border: none !important; cursor: pointer !important; color: var(--text-dark) !important; position: static !important; flex-shrink: 0 !important; align-self: stretch !important; z-index: 2 !important; padding: 0 !important; margin: 0 !important; }
+        .mobile-submenu-toggle::after { content: '' !important; width: 0 !important; height: 0 !important; border-left: 6px solid transparent !important; border-right: 6px solid transparent !important; border-top: 7px solid currentColor !important; transition: transform 0.3s ease !important; }
+        .mobile-submenu-toggle.expanded::after { transform: rotate(180deg) !important; }
+        .sub-menu a { padding: 10px 0 !important; display: block !important; color: var(--text-dark) !important; white-space: normal !important; }
+        .sub-menu .zappy-nav-child > a { padding-left: 28px !important; font-size: 0.9em !important; opacity: 0.85 !important; }
+        [dir="rtl"] .sub-menu .zappy-nav-child > a, html[lang="he"] .sub-menu .zappy-nav-child > a, html[lang="ar"] .sub-menu .zappy-nav-child > a { padding-left: 0 !important; padding-right: 28px !important; }
+        .sub-menu .zappy-nav-parent > a { font-weight: 600 !important; }
+        .nav-menu.active, #navMenu.active { max-width: 100vw !important; overflow-x: hidden !important; box-sizing: border-box !important; }
+        .navbar .sub-menu li a, nav.navbar .sub-menu li a, .zappy-products-dropdown .sub-menu a { color: var(--text-dark) !important; }
+      }
+      @media (min-width: 769px) { .mobile-submenu-toggle { display: none !important; } }
+    </style>
+
+    <style id="mobile-lang-menu-deployed-css">
+    @media (max-width: 768px) {
+      .lang-switcher,
+      .nav-cta-container .lang-switcher,
+      .nav-container .lang-switcher,
+      .navbar .lang-switcher,
+      .navbar .nav-cta-container .lang-switcher,
+      .nav-icons-left .lang-switcher,
+      .nav-ecommerce-icons .lang-switcher { display: none !important; }
+      .mobile-lang-menu { width: 100%; border-top: 1px solid rgba(128,128,128,0.2); padding: 8px 0 0 0; margin-top: 8px; }
+      .mobile-lang-toggle { display: flex !important; align-items: center; justify-content: space-between; width: 100%; padding: 12px 16px; background: none; border: none; cursor: pointer; font-size: 15px; color: inherit; font-family: inherit; }
+      .mobile-lang-toggle::after { content: ''; display: inline-block; width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); transition: transform 0.3s ease; margin-left: 8px; }
+      .mobile-lang-toggle.expanded::after { transform: rotate(-135deg); }
+      .mobile-lang-options { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+      .mobile-lang-options.expanded { max-height: 300px; }
+      .mobile-lang-option { display: flex !important; align-items: center; gap: 10px; padding: 10px 24px; text-decoration: none; color: inherit; font-size: 14px; font-family: inherit; }
+      .mobile-lang-option:hover { background: rgba(128,128,128,0.1); }
+      .mobile-lang-option.active { font-weight: 600; opacity: 0.7; pointer-events: none; }
+      .mobile-lang-option img { width: 20px; height: 20px; border-radius: 50%; }
+    }
+    @media (min-width: 769px) {
+      .mobile-lang-menu { display: none !important; }
+    }
+    </style>
+
+    <style id="zappy-widget-visibility">
+      #mic-access-tool-general-button, .mic-access-tool-general-button,
+      #mic-init-access-tool .mic-access-tool-general-button, #mic-init-access-tool #mic-access-tool-general-button,
+      ._access-icon, #mic-access-tool-box, .mic-access-tool-box,
+      #mic-init-access-tool #mic-access-tool-box, div[id*="mic-access-tool-box"], ._access-menu {
+        display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important;
+      }
+    </style>
+</head>
+<body>
+
+  <nav class="navbar" dir="rtl">
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+    <svg class="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" style="display: none;">
+      <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+  </button>
+
+  <button class="phone-header-btn" data-phone="03-0000000" aria-label="Call">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+    </svg>
+  </button>
+
+  <div class="nav-container">
+    <div class="nav-right-group"><div class="nav-brand">
+      <a href="/" class="logo-link">
+        <img src="/assets/business-logo.webp" alt="נחשקת" class="logo">
+      </a>
+    </div><ul class="nav-menu" id="navMenu"><li><a href="/signature-burgers">הבורגרים שלנו</a></li><li><a href="/our-story">הסיפור שלנו</a></li></ul></div>
+
+    
+
+    <div class="nav-cta-container">
+      <a href="/contact" class="nav-cta-btn">צור קשר</a>
+    </div>
+  </div>
+</nav>
+<script>
+
+// Navbar Mobile Menu Toggle and Contrast Fix
+(function() {
+  // Use 'load' event instead of 'DOMContentLoaded' to ensure we run AFTER all other scripts
+  window.addEventListener('load', function() {
+    
+    // FIX MOBILE BUTTON CONTRAST
+    // Detect navbar background color and apply contrasting color to mobile buttons
+    const navbar = document.querySelector('.navbar, nav, header');
+    if (!navbar) {
+      console.log('[Navbar] Navbar element not found');
+      return;
+    }
+    
+    // DECLARE VARIABLES EARLY to avoid Temporal Dead Zone errors
+    // These are used in multiple places below
+    let mobileToggle = document.getElementById('mobileToggle') ||
+                       document.querySelector('.mobile-toggle') ||
+                       document.querySelector('.hamburger') ||
+                       document.querySelector('.hamburger-menu') ||
+                       document.querySelector('.menu-toggle') ||
+                       document.querySelector('.burger-menu') ||
+                       document.querySelector('[aria-label="Menu"]') ||
+                       document.querySelector('[aria-label="תפריט"]');
+    
+    const phoneBtn = document.querySelector('.phone-header-btn');
+    
+    const computedStyle = window.getComputedStyle(navbar);
+    let bgColor = computedStyle.backgroundColor;
+    
+    console.log('[Navbar] Initial navbar background:', bgColor);
+    
+    // Check if background is transparent or rgba with 0 alpha
+    const isTransparent = bgColor === 'transparent' || 
+                         bgColor === 'rgba(0, 0, 0, 0)' ||
+                         (bgColor.startsWith('rgba') && bgColor.includes(', 0)'));
+    
+    if (isTransparent) {
+      // Check for background-image or gradient
+      const bgImage = computedStyle.backgroundImage;
+      if (bgImage && bgImage !== 'none') {
+        console.log('[Navbar] Navbar has background image/gradient, using dark text');
+        bgColor = 'rgb(240, 240, 240)'; // Assume light background
+      } else {
+        // Transparent navbar - check body background
+        const bodyBg = window.getComputedStyle(document.body).backgroundColor;
+        console.log('[Navbar] Navbar transparent, using body background:', bodyBg);
+        bgColor = bodyBg;
+      }
+    }
+    
+    // Calculate luminance to determine if background is light or dark
+    const rgb = bgColor.match(/\d+/g);
+    if (rgb && rgb.length >= 3) {
+      const r = parseInt(rgb[0]);
+      const g = parseInt(rgb[1]);
+      const b = parseInt(rgb[2]);
+      const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      
+      // Mobile button colors are set by Claude's AI-generated CSS (same as .nav-menu a)
+      // No dynamic color overrides needed - colors come from the generated navbar CSS
+      console.log('[Navbar] Mobile button colors preserved from Claude CSS (luminance:', luminance.toFixed(2) + ')');
+      
+      // FIX ICON SIZES - Ensure SVGs are properly sized and visible
+      // INJECT CRITICAL CSS TO OVERRIDE ANY CONFLICTING RULES
+      const criticalCSS = document.createElement('style');
+      criticalCSS.id = 'zappy-mobile-nav-fix';
+      const htmlLang = document.documentElement.lang || 'en';
+      const htmlDir = document.documentElement.dir || 'ltr';
+      // Check both dir attribute AND lang for RTL detection
+      // dir="rtl" is the most reliable indicator
+      const isRTL = htmlDir === 'rtl' || htmlLang === 'he' || htmlLang === 'ar';
+      
+      criticalCSS.textContent = `
+        /* Hide mobile buttons on desktop, show only on mobile */
+        @media (min-width: 769px) {
+          .mobile-toggle,
+          .phone-header-btn {
+            display: none !important;
+          }
+        }
+        
+        /* Show and position mobile buttons correctly on mobile */
+        @media (max-width: 768px) {
+          .mobile-toggle,
+          .phone-header-btn {
+            position: absolute !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            z-index: 1001 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 36px !important;
+            height: 36px !important;
+            border-radius: 50% !important;
+            border: none !important;
+            cursor: pointer !important;
+            padding: 6px !important;
+            background: none !important;
+            color: var(--nav-text, var(--text-dark)) !important;
+          }
+          
+          /* LTR positioning (default): hamburger LEFT, phone RIGHT */
+          html:not([dir="rtl"]):not([lang="he"]):not([lang="ar"]) .mobile-toggle,
+          html[dir="ltr"] .mobile-toggle {
+            left: 12px !important;
+            right: auto !important;
+          }
+          html:not([dir="rtl"]):not([lang="he"]):not([lang="ar"]) .phone-header-btn,
+          html[dir="ltr"] .phone-header-btn {
+            right: 12px !important;
+            left: auto !important;
+          }
+          
+          /* RTL positioning: hamburger RIGHT, phone LEFT */
+          html[dir="rtl"] .mobile-toggle,
+          html[lang="he"] .mobile-toggle,
+          html[lang="ar"] .mobile-toggle {
+            right: 12px !important;
+            left: auto !important;
+          }
+          html[dir="rtl"] .phone-header-btn,
+          html[lang="he"] .phone-header-btn,
+          html[lang="ar"] .phone-header-btn {
+            left: 12px !important;
+            right: auto !important;
+          }
+          
+          /* CRITICAL: Ensure nav-container has min-height on mobile */
+          /* All children are positioned absolutely/fixed on mobile, so height:auto collapses to 0 */
+          .nav-container {
+            min-height: 70px !important;
+            position: relative !important;
+          }
+          
+          /* Ensure SVG icons are properly sized and inherit color */
+          .mobile-toggle svg,
+          .phone-header-btn svg {
+            width: 24px !important;
+            height: 24px !important;
+            /* Don't force display - let JavaScript control hamburger/close toggle */
+          }
+          
+          /* Reset nav-cta-container on mobile - remove desktop box-shadow/padding */
+          /* that creates a visible ghost box when CTA button is hidden */
+          .nav-cta-container {
+            box-shadow: none !important;
+            padding: 0 !important;
+          }
+          
+          /* Hide nav-cta-container entirely on mobile when there's no lang-switcher */
+          /* (only the CTA button is inside, and it's hidden on mobile) */
+          .nav-cta-container:not(:has(.lang-switcher)) {
+            display: none !important;
+          }
+          
+          /* CRITICAL: Prevent hero image fade gradient from bleeding over headline text */
+          /* The .image-fade-gradient has bottom: -30px (extends below parent) */
+          /* On mobile stacked layout, this overlaps the h1 text below the image */
+          .hero-image-column {
+            overflow: hidden !important;
+          }
+          .image-fade-gradient {
+            bottom: 0 !important;
+          }
+          
+          /* Hide desktop language switcher on mobile - hamburger menu handles it */
+          /* High specificity to override stored CSS */
+          .lang-switcher,
+          .nav-cta-container .lang-switcher,
+          .nav-container .lang-switcher,
+          .navbar .lang-switcher,
+          .navbar .nav-cta-container .lang-switcher {
+            display: none !important;
+          }
+        }
+      `;
+      
+      // Remove existing fix if present and inject new one
+      const existing = document.getElementById('zappy-mobile-nav-fix');
+      if (existing) existing.remove();
+      document.head.appendChild(criticalCSS);
+      
+      console.log('[Navbar] Critical CSS injected for mobile nav positioning');
+      
+      // ONLY apply inline positioning styles on mobile viewport
+      // On desktop, the CSS handles hiding these buttons with display: none
+      // Inline styles were breaking desktop layout by overriding CSS
+      const isMobileViewport = window.innerWidth <= 768;
+      
+      if (mobileToggle) {
+        // Icon sizing applies to all viewports for consistency
+        const hamburgerIcon = mobileToggle.querySelector('.hamburger-icon');
+        const closeIcon = mobileToggle.querySelector('.close-icon');
+        
+        if (hamburgerIcon) {
+          hamburgerIcon.style.setProperty('width', '24px', 'important');
+          hamburgerIcon.style.setProperty('height', '24px', 'important');
+          hamburgerIcon.style.setProperty('display', 'block', 'important'); // Show hamburger by default
+        }
+        if (closeIcon) {
+          closeIcon.style.setProperty('width', '24px', 'important');
+          closeIcon.style.setProperty('height', '24px', 'important');
+          closeIcon.style.setProperty('display', 'none', 'important'); // Hide close icon by default
+        }
+        
+        // ONLY set positioning inline styles on mobile
+        if (isMobileViewport) {
+          mobileToggle.style.setProperty('position', 'absolute', 'important');
+          mobileToggle.style.setProperty('top', '50%', 'important');
+          mobileToggle.style.setProperty('transform', 'translateY(-50%)', 'important');
+          mobileToggle.style.setProperty('z-index', '1001', 'important');
+          
+          // Clear any inline left/right so CSS can take over based on html[dir]
+          mobileToggle.style.removeProperty('left');
+          mobileToggle.style.removeProperty('right');
+          
+          console.log('[Navbar] Mobile toggle positioning applied (mobile viewport)');
+        } else {
+          // On desktop, clear any positioning styles to let CSS handle it
+          mobileToggle.style.removeProperty('position');
+          mobileToggle.style.removeProperty('top');
+          mobileToggle.style.removeProperty('transform');
+          mobileToggle.style.removeProperty('z-index');
+          mobileToggle.style.removeProperty('left');
+          mobileToggle.style.removeProperty('right');
+          console.log('[Navbar] Desktop viewport - cleared mobile toggle inline positioning');
+        }
+      }
+      
+      if (phoneBtn) {
+        // Icon sizing applies to all viewports
+        const phoneIcon = phoneBtn.querySelector('svg');
+        if (phoneIcon) {
+          phoneIcon.style.width = '24px';
+          phoneIcon.style.height = '24px';
+          phoneIcon.setAttribute('width', '24');
+          phoneIcon.setAttribute('height', '24');
+        }
+        
+        // ONLY set positioning inline styles on mobile
+        if (isMobileViewport) {
+          phoneBtn.style.setProperty('position', 'absolute', 'important');
+          phoneBtn.style.setProperty('top', '50%', 'important');
+          phoneBtn.style.setProperty('transform', 'translateY(-50%)', 'important');
+          phoneBtn.style.setProperty('z-index', '1001', 'important');
+          
+          // Clear any inline left/right so CSS can take over based on html[dir]
+          phoneBtn.style.removeProperty('left');
+          phoneBtn.style.removeProperty('right');
+          
+          console.log('[Navbar] Phone button positioning applied (mobile viewport)');
+        } else {
+          // On desktop, clear any positioning styles to let CSS handle it
+          phoneBtn.style.removeProperty('position');
+          phoneBtn.style.removeProperty('top');
+          phoneBtn.style.removeProperty('transform');
+          phoneBtn.style.removeProperty('z-index');
+          phoneBtn.style.removeProperty('left');
+          phoneBtn.style.removeProperty('right');
+          console.log('[Navbar] Desktop viewport - cleared phone button inline positioning');
+        }
+      }
+    } else {
+      console.log('[Navbar] Could not parse background color:', bgColor);
+    }
+    
+    // MOBILE MENU TOGGLE
+    // Re-query in case DOM changed (mobileToggle already declared at top of function)
+    mobileToggle = document.getElementById('mobileToggle') ||
+                   document.querySelector('.mobile-toggle') ||
+                   document.querySelector('.hamburger') ||
+                   document.querySelector('.hamburger-menu') ||
+                   document.querySelector('.menu-toggle') ||
+                   document.querySelector('.burger-menu') ||
+                   document.querySelector('[aria-label="Menu"]') ||
+                   document.querySelector('[aria-label="תפריט"]');
+    
+    // EXPANDED SEARCH: Find nav menu by ID or class
+    const navMenu = document.getElementById('navMenu') ||
+                  document.querySelector('.nav-menu') ||
+                  document.querySelector('.nav-links') ||
+                  document.querySelector('nav ul:not(.submenu)');
+    
+    if (!mobileToggle || !navMenu) {
+      console.log('[Navbar] Mobile toggle or menu not found:', { toggle: !!mobileToggle, menu: !!navMenu });
+      return;
+    }
+    
+    // Ensure navMenu has ID for CSS targeting
+    if (!navMenu.id) {
+      navMenu.id = 'navMenu';
+    }
+    
+    console.log('[Navbar] Initializing mobile menu...');
+    
+    // Remove any existing event listeners by cloning the button
+    const newToggle = mobileToggle.cloneNode(true);
+    mobileToggle.parentNode.replaceChild(newToggle, mobileToggle);
+    
+    // Toggle menu on button click - use newToggle now
+    newToggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const hamburgerIcon = this.querySelector('.hamburger-icon');
+      const closeIcon = this.querySelector('.close-icon');
+      const isActive = navMenu.classList.contains('active');
+      
+      if (isActive) {
+        // Close menu
+        navMenu.classList.remove('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'block', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'none', 'important');
+        document.body.style.overflow = '';
+        console.log('[Navbar] Menu closed');
+      } else {
+        // Open menu
+        navMenu.classList.add('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'none', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'block', 'important');
+        document.body.style.overflow = 'hidden';
+        console.log('[Navbar] Menu opened');
+      }
+    });
+    
+    // Close menu when clicking nav links (but NOT dropdown toggles)
+    const navLinks = navMenu.querySelectorAll('a');
+    navLinks.forEach(function(link) {
+      link.addEventListener('click', function() {
+        // Don't close if it's a dropdown child (unless it's a real navigation link)
+        if (this.getAttribute('href') === '#') return;
+        
+        const hamburgerIcon = newToggle.querySelector('.hamburger-icon');
+        const closeIcon = newToggle.querySelector('.close-icon');
+        
+        navMenu.classList.remove('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'block', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'none', 'important');
+        document.body.style.overflow = '';
+        console.log('[Navbar] Menu closed (link clicked)');
+      });
+    });
+    
+    // DROPDOWN MENU TOGGLE (for mobile and touch devices)
+    var dropdownToggles = navMenu.querySelectorAll('.dropdown-toggle');
+    dropdownToggles.forEach(function(toggle) {
+      toggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var parent = this.closest('.nav-dropdown');
+        if (!parent) return;
+        
+        // Close other open dropdowns at the same level
+        var siblings = parent.parentNode.querySelectorAll('.nav-dropdown.open');
+        siblings.forEach(function(sib) {
+          if (sib !== parent) sib.classList.remove('open');
+        });
+        
+        parent.classList.toggle('open');
+        console.log('[Navbar] Dropdown toggled:', parent.classList.contains('open') ? 'open' : 'closed');
+      });
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.nav-dropdown')) {
+        var openDropdowns = document.querySelectorAll('.nav-dropdown.open');
+        openDropdowns.forEach(function(dd) { dd.classList.remove('open'); });
+      }
+    });
+    
+    console.log('[Navbar] Dropdown handlers initialized for ' + dropdownToggles.length + ' dropdowns');
+    
+    // Phone button functionality (phoneBtn already declared at top of function)
+    if (phoneBtn) {
+      phoneBtn.addEventListener('click', function() {
+        // Get phone number from placeholder in page or use default
+        const phoneLinks = document.querySelectorAll('a[href^="tel:"]');
+        const phoneNumber = phoneLinks.length > 0 
+          ? phoneLinks[0].getAttribute('href').replace('tel:', '')
+          : '[business_phone]';
+        
+        window.location.href = 'tel:' + phoneNumber;
+        console.log('[Navbar] Phone button clicked');
+      });
+    }
+    
+    console.log('[Navbar] Mobile menu initialized successfully');
+    
+    // === WHATSAPP BUTTON VISIBILITY FIX ===
+    // Ensure WhatsApp floating button is hidden on desktop and visible on mobile
+    // IMPORTANT: Only target the floating button by its class, NOT generic wa.me links
+    const handleWhatsAppVisibility = function() {
+      const whatsappBtn = document.querySelector('.whatsapp-float');
+      if (whatsappBtn) {
+        const isDesktop = window.innerWidth >= 769;
+        if (isDesktop) {
+          whatsappBtn.style.setProperty('display', 'none', 'important');
+          whatsappBtn.style.setProperty('visibility', 'hidden', 'important');
+          whatsappBtn.style.setProperty('opacity', '0', 'important');
+          whatsappBtn.style.setProperty('pointer-events', 'none', 'important');
+          console.log('[WhatsApp] Button hidden on desktop');
+        } else {
+          whatsappBtn.style.removeProperty('display');
+          whatsappBtn.style.removeProperty('visibility');
+          whatsappBtn.style.removeProperty('opacity');
+          whatsappBtn.style.removeProperty('pointer-events');
+          console.log('[WhatsApp] Button visible on mobile');
+        }
+      }
+    };
+    
+    // Run on load
+    handleWhatsAppVisibility();
+    
+    // Run on resize with debouncing
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(handleWhatsAppVisibility, 100);
+    });
+  });
+})();
+
+</script>
+  
+  <main>
+    <section class="signature-burgers-intro-section" data-layout-spec="הבורגרים שלנו-intro" dir="rtl">
+  <!-- Distressed texture overlay -->
+  <div class="sbi-texture-overlay" aria-hidden="true"></div>
+
+  <div class="sbi-container">
+    <!-- Content Column (START = RIGHT in RTL) -->
+    <div class="sbi-content-col">
+      <!-- Mustard accent line -->
+      <div class="sbi-accent-line" aria-hidden="true"></div>
+
+      <h1 class="sbi-headline">הרגעים<br><span class="sbi-headline-accent">הכי נחשקים</span><br>בצלחת</h1>
+
+      <h3 class="sbi-subheading">מסעדת המבורגרים שתל אביב לא יכולה להפסיק לדבר עליה</h3>
+
+      <p class="sbi-body">כל המבורגר שיוצא מהמטבח שלנו הוא פסגת תשוקה: בשר טרי שנטחן יומי, רטבים נועזים שנדבקים לאצבעות, ירקות פריכים שמספקים את הקראנץ׳ המושלם — וכל זה עטוף בלחמנייה שנאפית בבוקר. ב-נחשקת אנחנו לא מכינים אוכל. אנחנו יוצרים את הרגע שבו העיר נעצרת לשנייה ואתה פשוט נכנע לטעם. לילות תל אביב טועמים אחרת כשהמבורגר הכי טעים בישראל מחכה לך.</p>
+
+      <!-- Mustard divider line -->
+      <div class="sbi-divider-line" aria-hidden="true"></div>
+
+      <div class="sbi-meta-row">
+        <span class="sbi-meta-tag">100% בשר טרי</span>
+        <span class="sbi-meta-dot" aria-hidden="true"></span>
+        <span class="sbi-meta-tag">לחמניות ביתיות</span>
+        <span class="sbi-meta-dot" aria-hidden="true"></span>
+        <span class="sbi-meta-tag">רטבים מיוחדים</span>
+      </div>
+    </div>
+
+    <!-- Image Column (END = LEFT in RTL) -->
+    <div class="sbi-image-col">
+      <!-- Backplate offset peeking from END-bottom corner -->
+      <div class="sbi-backplate" aria-hidden="true"></div>
+
+      <!-- Poster frame wrapper -->
+      <div class="sbi-poster-frame">
+        <!-- Rough edge top decoration -->
+        <div class="sbi-frame-torn-top" aria-hidden="true"></div>
+
+        <figure class="sbi-figure">
+          <img data-placeholder="signature-burgers-intro-image-1" data-context="A dramatic close-up of a towering gourmet burger at a Tel Aviv burger restaurant called Nachsheqet. The burger has a toasted brioche bun, thick juicy beef patty with visible char marks, melted cheese dripping down the sides, fresh crispy lettuce, sliced tomato, caramelized onions, and bold house sauces. Warm cinematic lighting with amber and orange tones highlights the steam rising from the patty. Dark moody background with bokeh city lights, evoking a Tel Aviv night-out vibe. Shot in editorial food photography style with rich textures and vibrant colors." width="560" height="720" src="/assets/site-signature-burgers-intro-image-1.webp" alt="המבורגר הנחשק של נחשקת תל אביב — בשר עסיסי, גבינה נמסה ורטבים נועזים">
+        </figure>
+
+        <!-- Frame label stamp -->
+        <div class="sbi-frame-stamp">
+          <span class="sbi-stamp-text">נחשקת — תל אביב</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom angled poster-rip divider transitioning to dark section -->
+  <div class="sbi-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,90 L0,28 L48,34 L110,22 L195,38 L280,18 L370,32 L455,14 L540,30 L630,10 L720,26 L810,8 L900,24 L990,6 L1080,22 L1165,4 L1255,20 L1340,8 L1440,18 L1440,90 Z" fill="#17100E"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="signature-burgers-showcase-section" data-layout-spec="הבורגרים שלנו-showcase" dir="rtl">
+  <!-- Noise texture overlay -->
+  <div class="sbs-noise-overlay" aria-hidden="true"></div>
+
+  <div class="sbs-container">
+    <!-- Section Header -->
+    <div class="sbs-header">
+      <span class="sbs-eyebrow">מסעדת המבורגרים</span>
+      <h2 class="sbs-title">הבורגרים שלנו</h2>
+      <p class="sbs-subtitle">ארבעה בורגרים. כל אחד סיפור. אף אחד לא נשכח.</p>
+    </div>
+
+    <!-- 2x2 Burger Feature Grid -->
+    <div class="sbs-grid">
+
+      <!-- DOMINANT CARD (Start/Right side, taller) -->
+      <article class="sbs-card sbs-card--dominant">
+        <div class="sbs-card-image-wrap">
+          <img data-placeholder="signature-burgers-showcase-image-1" data-context="Ultra close-up hero shot of a massive gourmet smash burger on a dark slate surface, Tel Aviv burger restaurant, dramatic cinematic lighting, char-grilled beef patty with melted American cheese cascading down the sides, brioche bun with sesame seeds, caramelized onions, pickles and special sauce visible, smoky atmosphere, deep shadows, flame-coral and amber tones, food photography, hyper-realistic" width="600" height="800" src="/assets/site-signature-burgers-showcase-image-1.webp" alt="בורגר הדגל של נחשקת — סמאש בורגר עם גבינה אמריקאית">
+          <div class="sbs-card-image-overlay" aria-hidden="true"></div>
+        </div>
+        <div class="sbs-card-content">
+          <span class="sbs-card-tag">הדגל</span>
+          <h3 class="sbs-card-title">נחשקת קלאסיק</h3>
+          <p class="sbs-card-desc">שתי פטיות סמאש על ברזל לוהט, גבינה אמריקאית כפולה שנמסה בדיוק כמו שצריך, בצל מקורמל ורוטב הבית שאנחנו לא מספרים עליו — הבורגר שגרם לכל זה להתחיל.</p>
+          <div class="sbs-card-accent-line" aria-hidden="true"></div>
+        </div>
+      </article>
+
+      <!-- RIGHT COLUMN — two stacked cards -->
+      <div class="sbs-secondary-column">
+
+        <!-- Card 2 -->
+        <article class="sbs-card sbs-card--secondary">
+          <div class="sbs-card-image-wrap">
+            <img data-placeholder="signature-burgers-showcase-image-2" data-context="Overhead flat-lay shot of a gourmet burger with thick crispy bacon, aged cheddar cheese, smoky BBQ sauce dripping, dark rustic wooden board, dramatic side lighting, moody dark background, Tel Aviv street food culture, bold food photography, rich amber and brown tones" width="600" height="400" src="/assets/site-signature-burgers-showcase-image-2.webp" alt="בורגר עם בייקון קריספי וגבינת צ" דר="" מיושנת'="">
+            <div class="sbs-card-image-overlay" aria-hidden="true"></div>
+          </div>
+          <div class="sbs-card-content">
+            <span class="sbs-card-tag">עשן ואש</span>
+            <h3 class="sbs-card-title">סמוקי ביסט</h3>
+            <p class="sbs-card-desc">בייקון קריספי, צ'דר מיושן, רוטב BBQ מעושן ובצל מטוגן בשפע — בורגר שמריח מהמרחק ומשאיר רושם.</p>
+            <div class="sbs-card-accent-line" aria-hidden="true"></div>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="sbs-card sbs-card--secondary">
+          <div class="sbs-card-image-wrap">
+            <img data-placeholder="signature-burgers-showcase-image-3" data-context="Close-up side profile of a gourmet burger with a towering stack of crispy fried onion rings on top, spicy jalapeños, pepper jack cheese, sriracha mayo sauce dripping, dark moody background, dramatic studio lighting, Tel Aviv burger restaurant, fiery orange and red tones, food photography" width="600" height="400" src="/assets/site-signature-burgers-showcase-image-3.webp" alt="בורגר חריף עם ציפינג בצל קריספי וג" לפניו'="">
+            <div class="sbs-card-image-overlay" aria-hidden="true"></div>
+          </div>
+          <div class="sbs-card-content">
+            <span class="sbs-card-tag">חריף</span>
+            <h3 class="sbs-card-title">פאייר קראנץ'</h3>
+            <p class="sbs-card-desc">ג'לפניו טרי, גבינת פפר ג'ק, בצל קריספי גבוה ומיונז סריראצ'ה — לאלה שאוהבים שיורגש.</p>
+            <div class="sbs-card-accent-line" aria-hidden="true"></div>
+          </div>
+        </article>
+
+      </div><!-- /sbs-secondary-column -->
+
+      <!-- Card 4 — full-width bottom card -->
+      <article class="sbs-card sbs-card--wide">
+        <div class="sbs-card-image-wrap">
+          <img data-placeholder="signature-burgers-showcase-image-4" data-context="Wide angle shot of a luxurious double smash burger with truffle aioli, caramelized mushrooms, gruyere cheese melted perfectly, served on a black plate, dark atmospheric restaurant background, Tel Aviv fine dining burger experience, gold and cream color accents, cinematic moody lighting, premium food photography" width="1200" height="500" src="/assets/site-signature-burgers-showcase-image-4.webp" alt="בורגר פרמיום עם טרופל, פטריות מקורמלות וגרויר">
+          <div class="sbs-card-image-overlay" aria-hidden="true"></div>
+        </div>
+        <div class="sbs-card-content">
+          <span class="sbs-card-tag">פרמיום</span>
+          <h3 class="sbs-card-title">טרופל דה לוקס</h3>
+          <p class="sbs-card-desc">פטריות שמפיניון מקורמלות, גבינת גרויר שנמסה לאיטה, אייולי טרופל ועלי רוקט — המבורגר הכי טעים בישראל לדעת הלב שלנו.</p>
+          <div class="sbs-card-accent-line" aria-hidden="true"></div>
+        </div>
+      </article>
+
+    </div><!-- /sbs-grid -->
+  </div><!-- /sbs-container -->
+
+  <!-- Bottom heat-haze divider transitioning to light section -->
+  <div class="sbs-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="sbs-heat-gradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="transparent"></stop>
+          <stop offset="100%" stop-color="#F6EEE1"></stop>
+        </linearGradient>
+      </defs>
+      <path d="M0,90 L0,45 Q120,28 240,42 T480,32 Q600,44 720,30 T960,40 Q1080,28 1200,38 T1440,32 L1440,90 Z" fill="#F3EBDD"></path>
+      <rect x="0" y="0" width="1440" height="90" fill="url(#sbs-heat-gradient)"></rect>
+    </svg>
+  </div>
+</section>
+
+<section class="signature-burgers-ingredients-section" data-layout-spec="הבורגרים שלנו-ingredients" dir="rtl">
+  <!-- Texture overlay -->
+  <div class="sbi-texture" aria-hidden="true"></div>
+
+  <div class="sbi-container">
+    <!-- Text Content (START = RIGHT in RTL) -->
+    <div class="sbi-text-col">
+      <span class="sbi-eyebrow">מה שנכנס פנימה</span>
+      <h2 class="sbi-heading">מרכיבים שמסבירים<br>למה אי אפשר להפסיק</h2>
+
+      <div class="sbi-point">
+        <div class="sbi-point-accent" aria-hidden="true"></div>
+        <div class="sbi-point-body">
+          <h3 class="sbi-point-title">תוצרת טרייה בלבד</h3>
+          <p>כל ירק, כל לחמנייה, כל רוטב — מגיע טרי מדי יום. אנחנו לא מחזיקים מלאי של אתמול. הטריות היא לא שיווק, היא הסיבה שהנגיסה הראשונה מרגישה כמו הנגיסה הכי טובה שאכלת.</p>
+        </div>
+      </div>
+
+      <div class="sbi-point">
+        <div class="sbi-point-accent" aria-hidden="true"></div>
+        <div class="sbi-point-body">
+          <h3 class="sbi-point-title">אמנות הגריל</h3>
+          <p>הבשר נצלה על גריל פחם בטמפרטורה גבוהה — כדי לקבל קראסט מושלם מבחוץ ועסיסיות מפנים. אנחנו לא מחפשים בישול מהיר. אנחנו מחפשים את הרגע הנכון.</p>
+        </div>
+      </div>
+
+      <div class="sbi-point">
+        <div class="sbi-point-accent" aria-hidden="true"></div>
+        <div class="sbi-point-body">
+          <h3 class="sbi-point-title">איזון טעמים</h3>
+          <p>כל בורגר בנוי כמו יצירה — חמיצות, מתיקות, שומניות, ועוקצנות בפרופורציות מדויקות. כשאתם נושכים, אין טעם אחד שדומיננטי. יש הרמוניה. זה מה שגורם לכם לחזור.</p>
+        </div>
+      </div>
+
+      <div class="sbi-cta-row">
+        <a href="/menu" class="btn-primary sbi-cta">לתפריט המלא</a>
+      </div>
+    </div>
+
+    <!-- Image Column (END = LEFT in RTL) -->
+    <div class="sbi-image-col">
+      <div class="sbi-tile sbi-tile-1">
+        <img data-placeholder="signature-burgers-ingredients-image-1" data-context="Close-up still life of fresh burger ingredients: a glossy brioche bun dusted with sesame seeds, a thick hand-formed beef patty with visible char marks, and fresh tomato slices with water droplets, all arranged on a dark slate surface with dramatic shallow depth of field and warm side-lighting. Moody food photography for an upscale Tel Aviv burger restaurant." width="480" height="320" src="/assets/site-signature-burgers-ingredients-image-1.webp" alt="חומרי גלם טריים לבורגר — לחמנייה, בשר ועגבניות טריות">
+      </div>
+      <div class="sbi-tile sbi-tile-2">
+        <img data-placeholder="signature-burgers-ingredients-image-2" data-context="Extreme close-up of a beef burger patty sizzling on a charcoal grill, with visible flame licks, golden-brown crust, and wisps of smoke rising. Shot with shallow depth of field against a dark background. Cinematic, dramatic food photography for a bold Israeli burger restaurant." width="480" height="260" src="/assets/site-signature-burgers-ingredients-image-2.webp" alt="קציצת בשר על גריל פחם עם להבות">
+      </div>
+      <div class="sbi-tile sbi-tile-3">
+        <img data-placeholder="signature-burgers-ingredients-image-3" data-context="Overhead still life of artisan burger condiments and sauces in small ceramic bowls — caramelized onions, house-made aioli, pickles, and mustard — arranged on aged wood with scattered herbs and spices. Warm, textured food photography with soft natural light for a premium Tel Aviv burger spot." width="480" height="300" src="/assets/site-signature-burgers-ingredients-image-3.webp" alt="רטבים ותוספות בית — בצל מקורמל, איולי ביתי וחמוצים">
+      </div>
+    </div>
+  </div>
+
+  <!-- Perforated ticket-edge divider -->
+  <div class="sbi-divider-wrapper" aria-hidden="true">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1280 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,72 L0,18 Q10,22 20,18 Q30,14 40,18 Q50,22 60,18 Q70,14 80,18 Q90,22 100,18 Q110,14 120,18 Q130,22 140,18 Q150,14 160,18 Q170,22 180,18 Q190,14 200,18 Q210,22 220,18 Q230,14 240,18 Q250,22 260,18 Q270,14 280,18 Q290,22 300,18 Q310,14 320,18 Q330,22 340,18 Q350,14 360,18 Q370,22 380,18 Q390,14 400,18 Q410,22 420,18 Q430,14 440,18 Q450,22 460,18 Q470,14 480,18 Q490,22 500,18 Q510,14 520,18 Q530,22 540,18 Q550,14 560,18 Q570,22 580,18 Q590,14 600,18 Q610,22 620,18 Q630,14 640,18 Q650,22 660,18 Q670,14 680,18 Q690,22 700,18 Q710,14 720,18 Q730,22 740,18 Q750,14 760,18 Q770,22 780,18 Q790,14 800,18 Q810,22 820,18 Q830,14 840,18 Q850,22 860,18 Q870,14 880,18 Q890,22 900,18 Q910,14 920,18 Q930,22 940,18 Q950,14 960,18 Q970,22 980,18 Q990,14 1000,18 Q1010,22 1020,18 Q1030,14 1040,18 Q1050,22 1060,18 Q1070,14 1080,18 Q1090,22 1100,18 Q1110,14 1120,18 Q1130,22 1140,18 Q1150,14 1160,18 Q1170,22 1180,18 Q1190,14 1200,18 Q1210,22 1220,18 Q1230,14 1240,18 Q1250,22 1260,18 Q1270,14 1280,18 L1280,72 Z" fill="#17100E"></path>
+      <!-- Perforation dots -->
+      <circle cx="20" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="60" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="100" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="140" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="180" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="220" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="260" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="300" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="340" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="380" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="420" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="460" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="500" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="540" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="580" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="620" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="660" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="700" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="740" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="780" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="820" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="860" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="900" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="940" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="980" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="1020" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="1060" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="1100" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="1140" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="1180" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="1220" cy="18" r="5" fill="var(--bg-dark)"></circle>
+      <circle cx="1260" cy="18" r="5" fill="var(--bg-dark)"></circle>
+    </svg>
+  </div>
+</section>
+
+<section class="signature-burgers-ambience-section" data-layout-spec="הבורגרים שלנו-ambience" dir="rtl">
+  <!-- Grain texture overlay -->
+  <div class="ambience-grain" aria-hidden="true"></div>
+
+  <!-- Panoramic image upper half -->
+  <div class="ambience-panorama">
+    <img data-placeholder="signature-burgers-ambience-image-1" data-context="Wide panoramic interior shot of Nachsheqet burger restaurant in Tel Aviv at night: warm neon signs glowing amber and coral against deep indigo-charcoal walls, packed with energetic young crowd, dramatic overhead pendant lights casting pools of warm light on dark wood tables, smoky haze in the air, moody cinematic atmosphere, urban Tel Aviv nightlife vibe" width="1280" height="520" src="/assets/site-signature-burgers-ambience-image-1.webp" alt="אווירת מסעדת נחשקת — אורות ניאון, קהל, ולילה תל אביבי">
+    <div class="ambience-panorama-scrim" aria-hidden="true"></div>
+  </div>
+
+  <!-- Two-column content area -->
+  <div class="ambience-container">
+    <div class="ambience-two-col">
+
+      <!-- START (right) — text block -->
+      <div class="ambience-text-block">
+        <span class="ambience-eyebrow">האווירה</span>
+        <h2 class="ambience-heading">האוכל והמקום<br><em>עובדים יחד</em></h2>
+        <p class="ambience-body">נחשקת היא לא רק מסעדת המבורגרים — היא תחושה. מוזיקה שמרימה את הקצב, אורות שמחממים את הלילה, וקהל שבא כי הוא רוצה להיות כאן. הריח של הגריל מתמזג עם האנרגיה של תל אביב, ויחד הם יוצרים משהו שאי אפשר לשחזר בבית.</p>
+        <p class="ambience-body">כשאתם יושבים אצלנו, אתם חלק מהתמונה. האורות הנמוכים, הרעש הנכון, והבורגר שמגיע לשולחן — זה השילוב שגורם לאנשים לחזור שוב ושוב למסעדת הבורגר הכי נחשקת בתל אביב.</p>
+        <div class="ambience-accent-line" aria-hidden="true"></div>
+        <ul class="ambience-vibes">
+          <li><i class="fa-solid fa-fire" aria-hidden="true"></i><span>גריל פתוח, ריח שמשגע</span></li>
+          <li><i class="fa-solid fa-music" aria-hidden="true"></i><span>מוזיקה שמרגישה נכון</span></li>
+          <li><i class="fa-solid fa-moon" aria-hidden="true"></i><span>לילה תל אביבי אמיתי</span></li>
+        </ul>
+      </div>
+
+      <!-- END (left) — two stacked photo tiles -->
+      <div class="ambience-photo-stack">
+        <div class="ambience-photo-tile ambience-tile-top">
+          <img data-placeholder="signature-burgers-ambience-image-2" data-context="Close-up moody photo of Nachsheqet restaurant interior: warm amber neon sign on dark brick wall, two people laughing at a dark wood table with craft beer glasses and a loaded burger, bokeh background, cinematic Tel Aviv nightlife, intimate and desirable atmosphere" width="520" height="320" src="/assets/site-signature-burgers-ambience-image-2.webp" alt="לקוחות נהנים מארוחה בנחשקת">
+          <div class="ambience-tile-scrim" aria-hidden="true"></div>
+        </div>
+        <div class="ambience-photo-tile ambience-tile-bottom">
+          <img data-placeholder="signature-burgers-ambience-image-3" data-context="Dramatic overhead shot of Nachsheqet burger restaurant bar area at night: bartender pouring drinks, neon coral and mustard light reflections on polished dark counter, blurred crowd in background, smoky atmospheric haze, bold urban Israeli nightlife energy" width="520" height="260" src="/assets/site-signature-burgers-ambience-image-3.webp" alt="הבר של נחשקת בלילה">
+          <div class="ambience-tile-scrim" aria-hidden="true"></div>
+          <span class="ambience-tile-badge">תל אביב, לילה</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bottom torn-edge divider revealing next light section -->
+  <div class="ambience-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1280 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,90 L0,48 Q40,38 80,50 T180,42 Q230,52 290,40 T400,46 Q460,38 520,50 T630,40 Q690,52 760,42 T870,48 Q930,38 1000,50 T1110,42 Q1160,52 1200,44 T1280,50 L1280,90 Z" fill="#F3EBDD"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="signature-burgers-cta-section" data-layout-spec="הבורגרים שלנו-cta" dir="rtl">
+  <div class="signature-burgers-cta-inner">
+    <div class="signature-burgers-cta-accent-line"></div>
+    <h2 class="signature-burgers-cta-heading">מוכנים לחוות את הטעם בעצמכם?</h2>
+    <p class="signature-burgers-cta-text">כל בורגר שתיארנו כאן מחכה לכם על הצלחת — טרי, עשיר, ועם הריח שלא שוכחים. בואו לבקר אותנו במסעדת ההמבורגרים שלנו בתל אביב ותגלו מה הופך את נחשקת למקום שחוזרים אליו שוב ושוב.</p>
+    <div class="signature-burgers-cta-buttons">
+      <a href="/contact" class="btn-cta-primary">צרו קשר</a>
+      <a href="/" class="btn-cta-secondary">לעמוד הבית</a>
+    </div>
+  </div>
+</section>
+  </main>
+  
+  <footer class="site-footer" dir="rtl">
+  <div class="footer-inner">
+    <div class="footer-top">
+
+      <!-- Column 1: Company Info -->
+      <div class="footer-col footer-brand">
+        <div class="footer-logo-wrap">
+          <img src="/assets/business-logo.webp" alt="נחשקת" class="logo">
+        </div>
+        <p class="footer-tagline">טעם שלא משחררים.<br>ברגרים שנחרטים בזיכרון.</p>
+        <div class="footer-social">
+          <a href="[facebook_handle]" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="[instagram_handle]" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="[whatsapp_handle]" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+
+      <!-- Column 2: Quick Links -->
+      <div class="footer-col footer-nav">
+        <h3 class="footer-heading"><span class="heading-accent"></span>ניווט מהיר</h3>
+        <ul class="footer-links">
+          <li><a href="/signature-burgers">הבורגרים שלנו</a></li>
+          <li><a href="/our-story">הסיפור שלנו</a></li>
+          <li><a href="/contact">צור קשר</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 3: Contact -->
+      <div class="footer-col footer-contact-col">
+        <h3 class="footer-heading"><span class="heading-accent"></span>יצירת קשר</h3>
+        <ul class="footer-contact">
+          <li>
+            <span class="contact-icon"><i class="fas fa-envelope"></i></span>
+            <span class="contact-text"><a href="mailto:[business_email]">[business_email]</a></span>
+          </li>
+          <li>
+            <span class="contact-icon"><i class="fas fa-phone"></i></span>
+            <span class="contact-text"><a href="tel:[business_phone]">[business_phone]</a></span>
+          </li>
+          <li><a href="/"><span class="contact-icon"><i class="fas fa-map-marker-alt"></i></span>
+            <span class="contact-text">[business_address]</span></a></li>
+        </ul>
+      </div>
+
+      <!-- Column 4: Hours / Extra -->
+      <div class="footer-col footer-hours">
+        <h3 class="footer-heading"><span class="heading-accent"></span>שעות פעילות</h3>
+        <ul class="footer-hours-list">
+          <li><a href="/"><span class="day">ראשון – חמישי</span><span class="time">12:00 – 23:00</span></a></li>
+          <li><a href="/"><span class="day">שישי</span><span class="time">12:00 – 16:00</span></a></li>
+          <li><a href="/"><span class="day">שבת</span><span class="time">19:00 – 23:30</span></a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Divider -->
+    <div class="footer-divider"></div>
+
+    <!-- Bottom Bar -->
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 נחשקת. כל הזכויות שמורות.</p>
+      <div class="footer-legal">
+        <a href="/privacy">מדיניות פרטיות</a>
+        <span class="legal-sep">|</span>
+        <a href="/terms">תנאי שימוש</a>
+        <span class="legal-sep">|</span>
+        <a href="/accessibility">נגישות</a>
+        <span class="legal-sep">|</span>
+        <a href="https://zappy5.com" target="_blank" class="zappy-attribution">נוצר באמצעות Zappy</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Texture overlay -->
+  <div class="footer-texture" aria-hidden="true"></div>
+</footer>
+  
+  <a href="https://wa.me/[whatsapp_handle]" class="whatsapp-float" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  
+  <div data-integration="accessibility:toolbar"></div>
+
+    <script src="/script.js"></script>
+
+    <script id="zappy-mobile-submenu-script">
+    (function() {
+      function initMobileSubmenuToggles() {
+        if (window.innerWidth > 768) {
+          document.querySelectorAll('.mobile-submenu-toggle').forEach(function(btn) { btn.remove(); });
+          document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) { menu.classList.remove('mobile-expanded'); });
+          return;
+        }
+        var items = document.querySelectorAll('.nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu)');
+        items.forEach(function(li) {
+          if (li.querySelector('.mobile-submenu-toggle')) return;
+          var submenu = li.querySelector('.sub-menu');
+          var parentLink = li.querySelector(':scope > a');
+          if (!submenu || !parentLink) return;
+          var toggleBtn = document.createElement('button');
+          toggleBtn.className = 'mobile-submenu-toggle';
+          toggleBtn.setAttribute('aria-label', 'Toggle submenu');
+          toggleBtn.setAttribute('type', 'button');
+          parentLink.insertAdjacentElement('afterend', toggleBtn);
+          toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) {
+              if (menu !== submenu) { menu.classList.remove('mobile-expanded'); var t = menu.parentElement.querySelector('.mobile-submenu-toggle'); if(t) t.classList.remove('expanded'); }
+            });
+            submenu.classList.toggle('mobile-expanded');
+            toggleBtn.classList.toggle('expanded');
+          });
+        });
+      }
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initMobileSubmenuToggles); }
+      else { initMobileSubmenuToggles(); }
+      var resizeTimer; window.addEventListener('resize', function() { clearTimeout(resizeTimer); resizeTimer = setTimeout(initMobileSubmenuToggles, 250); });
+      // Re-initialize when mobile menu becomes visible (MutationObserver)
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'attributes') {
+            var target = mutation.target;
+            if (target.classList && (target.classList.contains('active') || target.classList.contains('open'))) {
+              setTimeout(initMobileSubmenuToggles, 100);
+            }
+          }
+        });
+      });
+      setTimeout(function() {
+        document.querySelectorAll('.mobile-menu, .nav-menu, #navMenu, nav').forEach(function(menu) {
+          observer.observe(menu, { attributes: true, attributeFilter: ['class', 'style'] });
+        });
+      }, 500);
+    })();
+    </script>
+
+    <script id="zappy-mobile-lang-menu-script">
+    (function() {
+      function initMobileLangMenu() {
+        if (window.innerWidth > 768) {
+          var existingMenu = document.querySelector('.mobile-lang-menu');
+          if (existingMenu) existingMenu.remove();
+          return;
+        }
+        if (document.querySelector('.mobile-lang-menu')) return;
+        var switcher = document.querySelector('.lang-switcher');
+        if (!switcher) return;
+        var dropdown = switcher.querySelector('.lang-switcher-dropdown');
+        if (!dropdown) return;
+        var options = dropdown.querySelectorAll('.lang-option');
+        if (options.length === 0) return;
+        var navMenu = document.getElementById('navMenu') || document.querySelector('.nav-menu') || document.querySelector('nav ul');
+        if (!navMenu) return;
+        var currentLang = document.documentElement.lang || 'en';
+        var langConfigs = {
+          he: {name:'עברית',flag:'https://api.iconify.design/circle-flags/il.svg'},
+          en: {name:'English',flag:'https://api.iconify.design/circle-flags/us.svg'},
+          ar: {name:'العربية',flag:'https://api.iconify.design/circle-flags/sa.svg'},
+          fr: {name:'Français',flag:'https://api.iconify.design/circle-flags/fr.svg'},
+          es: {name:'Español',flag:'https://api.iconify.design/circle-flags/es.svg'},
+          de: {name:'Deutsch',flag:'https://api.iconify.design/circle-flags/de.svg'},
+          ru: {name:'Русский',flag:'https://api.iconify.design/circle-flags/ru.svg'},
+          zh: {name:'中文',flag:'https://api.iconify.design/circle-flags/cn.svg'},
+          ja: {name:'日本語',flag:'https://api.iconify.design/circle-flags/jp.svg'},
+          pt: {name:'Português',flag:'https://api.iconify.design/circle-flags/br.svg'},
+          it: {name:'Italiano',flag:'https://api.iconify.design/circle-flags/it.svg'},
+          ko: {name:'한국어',flag:'https://api.iconify.design/circle-flags/kr.svg'}
+        };
+        var container = document.createElement('div');
+        container.className = 'mobile-lang-menu';
+        var currentConfig = langConfigs[currentLang] || {name:currentLang,flag:''};
+        var toggleBtn = document.createElement('button');
+        toggleBtn.className = 'mobile-lang-toggle';
+        toggleBtn.type = 'button';
+        var currentFlagHtml = currentConfig.flag ? '<img src="' + currentConfig.flag + '" width="20" height="20" alt="" style="border-radius:50%;margin-right:8px;margin-left:8px;">' : '';
+        toggleBtn.innerHTML = currentFlagHtml + currentConfig.name;
+        container.appendChild(toggleBtn);
+        var optionsDiv = document.createElement('div');
+        optionsDiv.className = 'mobile-lang-options';
+        var currentLink = document.createElement('a');
+        currentLink.className = 'mobile-lang-option active';
+        currentLink.href = '#';
+        currentLink.innerHTML = currentFlagHtml + currentConfig.name;
+        optionsDiv.appendChild(currentLink);
+        options.forEach(function(opt) {
+          var link = document.createElement('a');
+          link.className = 'mobile-lang-option';
+          link.href = opt.getAttribute('href');
+          link.innerHTML = opt.innerHTML;
+          optionsDiv.appendChild(link);
+        });
+        container.appendChild(optionsDiv);
+        navMenu.appendChild(container);
+        toggleBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleBtn.classList.toggle('expanded');
+          optionsDiv.classList.toggle('expanded');
+        });
+      }
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initMobileLangMenu); }
+      else { initMobileLangMenu(); }
+      window.addEventListener('resize', function() { clearTimeout(window._mlrt); window._mlrt = setTimeout(initMobileLangMenu, 250); });
+    })();
+    </script>
+</body>
+</html>

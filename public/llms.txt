@@ -1,0 +1,47 @@
+# Business — Generative Engine Optimization Map
+
+---
+
+## Pages
+
+### בית
+https://example.com
+נחשקת היא מסעדת המבורגרים הכי נחשקת בתל אביב. בורגרים עסיסיים, טעמים נועזים ואווירה אורבנית שתגרום לכם לחזור שוב ושוב. בואו לגלות למה כולם מדברים עלינו.
+
+### הבורגרים שלנו
+https://example.com/signature-burgers
+הכירו את תפריט הבורגרים הייחודי של נחשקת — כל בורגר הוא יצירת מופת של טעם, עסיסיות ויצירתיות. מסעדת המבורגרים בישראל שמגדירה מחדש את חוויית האכילה. בחרו את הבורגר שלכם עוד היום.
+
+### הסיפור שלנו
+https://example.com/our-story
+הסיפור של נחשקת הוא סיפור של תשוקה, אומץ ואהבה בלתי מתפשרת לאוכל אמיתי. גלו איך נולדה מסעדת המבורגרים שכבשה את תל אביב ולמה הזהות שלנו כל כך נועזת ואותנטית.
+
+### צור קשר
+https://example.com/contact
+רוצים להזמין מקום, לשאול שאלה או פשוט לדעת איפה אנחנו? מסעדת בורגר לילה בתל אביב שמחכה לכם. צרו קשר עכשיו ותכננו את הביקור הנחשק הבא שלכם אצלנו.
+
+## Legal & Policy
+
+### Privacy Policy
+https://example.com/privacy
+Information about how user data is collected, stored, and protected.
+
+### Terms & Conditions
+https://example.com/terms
+Legal terms describing service usage, rights, and policies.
+
+### Accessibility Statement
+https://example.com/accessibility
+Information about WCAG compliance and accessibility features.
+
+---
+
+# Business Context (for LLM understanding)
+
+## About Business
+---
+
+# Additional Resources
+
+- **Sitemap**: https://example.com/sitemap.xml
+- **Robots.txt**: https://example.com/robots.txt
